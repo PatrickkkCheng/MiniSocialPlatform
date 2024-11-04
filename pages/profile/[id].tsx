@@ -12,9 +12,28 @@ type User = {
   email: string
   _count: {
     posts: number
-    followers: number
-    following: number
   }
+}
+
+// 定義 Post 類型
+type PostAuthor = {
+  id: string
+  name: string
+  image: string
+}
+
+type Post = {
+  id: string
+  content: string
+  images: string[]
+  video?: string | null
+  createdAt: string
+  author: PostAuthor
+  _count: {
+    likes: number
+    comments: number
+  }
+  isLiked?: boolean
 }
 
 export default function Profile() {
@@ -22,7 +41,7 @@ export default function Profile() {
   const { id } = router.query
   const { data: session } = useSession()
   const [user, setUser] = useState<User | null>(null)
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
