@@ -12,6 +12,9 @@ RUN npx prisma generate
 
 COPY . .
 
+# 清除舊的構建文件
+RUN rm -rf .next
+
 RUN npm run build
 
 # 添加執行權限給啟動腳本

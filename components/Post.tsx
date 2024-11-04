@@ -4,6 +4,13 @@ import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
 import { zhTW } from 'date-fns/locale'
+import { Session } from "next-auth"
+
+type PostAuthor = {
+  id: string
+  name: string
+  image: string
+}
 
 type PostProps = {
   post: {
@@ -12,11 +19,7 @@ type PostProps = {
     images: string[]
     video?: string | null
     createdAt: string
-    author: {
-      id: string
-      name: string
-      image: string
-    }
+    author: PostAuthor
     _count: {
       likes: number
       comments: number
