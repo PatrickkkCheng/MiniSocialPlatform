@@ -1,18 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 
 export default function CreatePost() {
-  const { data: session } = useSession()
   const router = useRouter()
+  const { data: session, status } = useSession()
   const [content, setContent] = useState('')
   const [images, setImages] = useState<File[]>([])
   const [video, setVideo] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // 使用 useEffect 來處理重定向
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.replace('/login')
+    }
+  }, [status, router])
+
+  // 如果正在檢查登入狀態，顯示載入中
+  if (status === 'loading') {
+    return <div className="text-center py-8">載入中...</div>
+  }
+
+  // 如果未登入，不渲染表單內容
   if (!session) {
-    router.push('/login')
     return null
   }
 
@@ -122,4 +134,11 @@ export default function CreatePost() {
       </form>
     </div>
   )
+}
+
+// 添加 getServerSideProps 來強制客戶端渲染
+export async function getServerSideProps() {
+  return {
+    props: {},
+  }
 } 
