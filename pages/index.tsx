@@ -3,9 +3,30 @@ import { useSession } from 'next-auth/react'
 import Post from '@/components/Post'
 import Link from 'next/link'
 
+// 定義 Post 類型
+type PostAuthor = {
+  id: string
+  name: string
+  image: string
+}
+
+type Post = {
+  id: string
+  content: string
+  images: string[]
+  video?: string | null
+  createdAt: string
+  author: PostAuthor
+  _count: {
+    likes: number
+    comments: number
+  }
+  isLiked?: boolean
+}
+
 export default function Home() {
   const { data: session } = useSession()
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
