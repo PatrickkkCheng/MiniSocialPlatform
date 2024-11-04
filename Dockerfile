@@ -10,13 +10,13 @@ COPY prisma ./prisma/
 
 RUN npx prisma generate
 
-RUN echo -e '#!/bin/sh\n\
+RUN printf '#!/bin/sh\n\
 echo "Waiting for database to be ready..."\n\
 sleep 5\n\
 echo "Running database migrations..."\n\
 npx prisma migrate deploy\n\
 echo "Starting the application..."\n\
-npm start' > /app/start.sh
+npm start\n' > /app/start.sh
 
 RUN chmod +x /app/start.sh
 
@@ -28,4 +28,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD ["/app/start.sh"] 
+CMD ["/bin/sh", "/app/start.sh"] 
