@@ -14,6 +14,10 @@ COPY . .
 
 RUN npm run build
 
+# 添加執行權限給啟動腳本
+RUN chmod +x ./scripts/start.sh
+
 EXPOSE 3000
 
-CMD ["npm", "start"] 
+# 使用啟動腳本替代直接啟動命令
+CMD ["./scripts/start.sh"] 
