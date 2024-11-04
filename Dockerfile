@@ -10,17 +10,24 @@ COPY prisma ./prisma/
 
 RUN npx prisma generate
 
+RUN mkdir -p scripts
+
+RUN echo '#!/bin/sh\n\n\
+echo "Waiting for database to be ready..."\n\
+sleep 5\n\n\
+echo "Running database migrations..."\n\
+npx prisma migrate deploy\n\n\
+echo "Starting the application..."\n\
+npm start' > scripts/start.sh
+
+RUN chmod +x scripts/start.sh
+
 COPY . .
 
-# 清除舊的構建文件
 RUN rm -rf .next
 
 RUN npm run build
 
-# 添加執行權限給啟動腳本
-RUN chmod +x ./scripts/start.sh
-
 EXPOSE 3000
 
-# 使用啟動腳本替代直接啟動命令
 CMD ["./scripts/start.sh"] 
