@@ -1,19 +1,16 @@
 import { PrismaClient } from '@prisma/client'
 
-// 添加全局類型聲明
+// 擴展 NodeJS.Global 接口
 declare global {
+  // eslint-disable-next-line no-var
   var prisma: PrismaClient | undefined
 }
 
-let prisma: PrismaClient
+// 防止開發環境下產生多個 Prisma Client 實例
+const prisma = global.prisma || new PrismaClient()
 
-if (process.env.NODE_ENV === 'production') {
-  prisma = new PrismaClient()
-} else {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient()
-  }
-  prisma = global.prisma
+if (process.env.NODE_ENV !== 'production') {
+  global.prisma = prisma
 }
 
 export default prisma 
