@@ -1,5 +1,10 @@
 import { PrismaClient } from '@prisma/client'
 
+// 添加全局類型聲明
+declare global {
+  var prisma: PrismaClient | undefined
+}
+
 let prisma: PrismaClient
 
 if (process.env.NODE_ENV === 'production') {
