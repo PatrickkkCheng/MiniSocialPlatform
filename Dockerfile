@@ -28,4 +28,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD ["./start.sh"] 
+CMD ["/bin/sh", "./start.sh"] 
