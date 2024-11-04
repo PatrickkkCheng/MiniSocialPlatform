@@ -3,9 +3,13 @@ import prisma from '@/lib/prisma'
 import { createTransport } from 'nodemailer'
 import crypto from 'crypto'
 
+type ResponseData = {
+  message: string
+}
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<ResponseData>
 ) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: '只允許 POST 請求' })
