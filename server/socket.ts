@@ -13,7 +13,16 @@ const users = new Map()
 const subscriptions = new Map()
 
 export default function initSocket(server: HttpServer) {
-  const io = new SocketIOServer(server)
+  if (server.io) {
+    console.log('Socket.IO server already running')
+    return server.io
+  }
+
+  const io = new SocketIOServer(server, {
+    path: '/api/socketio',
+  })
+  
+  server.io = io
 
   io.on('connection', (socket) => {
     const userId = socket.handshake.query.userId as string

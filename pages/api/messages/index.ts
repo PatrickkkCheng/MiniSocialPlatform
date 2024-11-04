@@ -42,7 +42,9 @@ export default async function handler(
       })
 
       // 通過 Socket.IO 發送消息
-      emitMessage(req.socket.server.io, receiverId, message)
+      if (res.socket?.server?.io) {
+        emitMessage(res.socket.server.io, receiverId, message)
+      }
 
       res.status(201).json(message)
     } catch (error) {
