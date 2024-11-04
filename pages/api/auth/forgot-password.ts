@@ -3,7 +3,7 @@ import prisma from '@/lib/prisma'
 import { createTransport } from 'nodemailer'
 import crypto from 'crypto'
 
-type ResponseData = {
+interface ResponseData {
   message: string
 }
 
@@ -12,7 +12,8 @@ export default async function handler(
   res: NextApiResponse<ResponseData>
 ) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: '只允許 POST 請求' })
+    res.status(405).json({ message: '只允許 POST 請求' })
+    return
   }
 
   try {
@@ -23,7 +24,8 @@ export default async function handler(
     })
 
     if (!user) {
-      return res.status(404).json({ message: '找不到此電子郵件的用戶' })
+      res.status(404).json({ message: '找不到此電子郵件的用戶' })
+      return
     }
 
     // 生成重置令牌
