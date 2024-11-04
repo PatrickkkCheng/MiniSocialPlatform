@@ -10,13 +10,13 @@ COPY prisma ./prisma/
 
 RUN npx prisma generate
 
-RUN printf '#!/bin/sh\n\
-echo "Waiting for database to be ready..."\n\
-sleep 5\n\
-echo "Running database migrations..."\n\
-npx prisma migrate deploy\n\
-echo "Starting the application..."\n\
-npm start\n' > /app/start.sh
+RUN echo "#!/bin/sh" > /app/start.sh && \
+    echo "echo 'Waiting for database to be ready...'" >> /app/start.sh && \
+    echo "sleep 5" >> /app/start.sh && \
+    echo "echo 'Running database migrations...'" >> /app/start.sh && \
+    echo "npx prisma migrate deploy" >> /app/start.sh && \
+    echo "echo 'Starting the application...'" >> /app/start.sh && \
+    echo "npm start" >> /app/start.sh
 
 RUN chmod +x /app/start.sh
 
