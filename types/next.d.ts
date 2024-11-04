@@ -7,6 +7,7 @@ declare module 'next' {
   export interface NextApiResponse<T = any> {
     status(code: number): NextApiResponse<T>
     json(body: T): void
+    end(): void
     socket: {
       server: NetServer & {
         io?: SocketIOServer
